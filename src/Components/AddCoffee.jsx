@@ -1,10 +1,34 @@
 import React from 'react'
+import { data } from 'react-router';
 
 const AddCoffee = () => {
 const handleAddCoffee = (e) => {
     e.preventDefault();
     const form=e.target;
-
+     const newCoffee = {
+      name: form.name.value,
+      quantity: form.quantity.value,
+      supplier: form.supplier.value,
+      taste: form.taste.value,
+      price: form.price.value,
+      details: form.details.value,
+      photo: form.photo.value
+    };
+    console.log(newCoffee);
+    //send coffee data to db
+    fetch('http://localhost:3000/coffees',{
+        method:'POST',
+        headers:{
+            'content-type':'application/json'
+        },
+        body:JSON.stringify(newCoffee)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        console.log("after adding data to db",data)
+    
+        
+    })
 }
 
 
