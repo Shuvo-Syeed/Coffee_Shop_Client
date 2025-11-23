@@ -1,46 +1,53 @@
 import React from 'react'
 import { data } from 'react-router';
+import Swal from 'sweetalert2';
 
 const AddCoffee = () => {
-const handleAddCoffee = (e) => {
-    e.preventDefault();
-    const form=e.target;
-     const newCoffee = {
-      name: form.name.value,
-      quantity: form.quantity.value,
-      supplier: form.supplier.value,
-      taste: form.taste.value,
-      price: form.price.value,
-      details: form.details.value,
-      photo: form.photo.value
-    };
-    console.log(newCoffee);
-    //send coffee data to db
-    fetch('http://localhost:3000/coffees',{
-        method:'POST',
-        headers:{
-            'content-type':'application/json'
-        },
-        body:JSON.stringify(newCoffee)
-    })
-    .then(res=>res.json())
-    .then(data=>{
-        console.log("after adding data to db",data)
-    
-        
-    })
-}
+    const handleAddCoffee = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const newCoffee = {
+            name: form.name.value,
+            quantity: form.quantity.value,
+            supplier: form.supplier.value,
+            taste: form.taste.value,
+            price: form.price.value,
+            details: form.details.value,
+            photo: form.photo.value
+        };
+        console.log(newCoffee);
+        //send coffee data to db
+        fetch('http://localhost:3000/coffees', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.insertedId){
+                    Swal.fire({
+                        title: "Coffee Added Successfully!",
+                        icon: "success",
+                        draggable: true
+                    });
+                }
+
+
+            })
+    }
 
 
 
 
-  return (
-     <div className='p-24'>
+    return (
+        <div className='p-24'>
             <div className='p-12 text-center space-y-4'>
                 <h1 className="text-6xl">Add Coffee</h1>
                 <p>It is a long established fact that a reader will be distraceted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here.</p>
             </div>
-              <form onSubmit={handleAddCoffee} >
+            <form onSubmit={handleAddCoffee} >
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
                     <fieldset className="fieldset bg-base-200 border-base-300 rounded-box border p-4">
                         <label className="label">Name</label>
@@ -74,8 +81,8 @@ const handleAddCoffee = (e) => {
 
                 <input type="submit" className='btn w-full' value="Add Coffee" />
             </form>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default AddCoffee
